@@ -71,6 +71,18 @@ const preload = (preloadFunctions, options = {}) => {
         this.state = {
           state: IS_RESOLVING
         }
+
+        this.removeOwnProps = this.removeOwnProps.bind(this);
+      }
+
+      removeOwnProps() {
+        const passedProps = Object.assign({}, this.props);
+        delete passedProps.preloadFunctions;
+        delete passedProps._dispatch;
+        delete passedProps.registerPreloadFunction;
+        delete passedProps.markPreloadAsResolved;
+
+        return passedProps;
       }
 
       componentDidMount() {
@@ -89,12 +101,14 @@ const preload = (preloadFunctions, options = {}) => {
             return;
           }
 
+          // @TODO what to do when an preloadFunction is already resolving?
+
           /**
            * If the preload function was not yet resolved, call it and pass
            * redux `dispatch()`, and our `next()` callback
            */
           (preloadFunctions[key].fn).apply(this, [
-            next.bind(this, key), this.props._dispatch
+            next.bind(this, key), this.props._dispatch, this.removeOwnProps()
           ]);
 
           /**
@@ -117,11 +131,7 @@ const preload = (preloadFunctions, options = {}) => {
          * Pass all the props we've received but make sure not to leak
          * the props specific to our component
          */
-        const props = Object.assign({}, this.props);
-        delete props.preloadFunctions;
-        delete props._dispatch;
-        delete props.registerPreloadFunction;
-        delete props.markPreloadAsResolved;
+        const props = this.removeOwnProps();
 
         if(this.state.state === IS_RESOLVED) {
           return (

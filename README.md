@@ -42,13 +42,14 @@ const App = () => {
 
 ```javascript
 import { preload } from "redux-preload";
-preload(preloadFunctions, [options])(Component);
+preload(preloadFunctions, [options, props])(Component);
 ```
 
-`preloadFunctions` should be an Object which every key will be considered a preload function to be evaluated before rendering the Component. Each of the functions will be called with 2 parameters:
+`preloadFunctions` should be an Object which every key will be considered a preload function to be evaluated before rendering the Component. Each of the functions will be called with following parameters:
 
 - `next` - a callback to be called after the preloadFunction should be considered resolved
 - `dispatch` - Redux `dispatch()` function attached to the current store supplied by `react-redux` `<Provider />`
+- `props` - the props passed to the Component while rendering
 
 `options` - optional secondary parameter with following keys:
 
