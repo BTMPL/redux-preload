@@ -1,3 +1,5 @@
+// @TODO fails to clear cache with multiple preloaders
+
 import React from "react";
 import { connect } from "react-redux";
 import { registerPreloadFunction, markPreloadAsResolved } from "./store";

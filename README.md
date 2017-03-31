@@ -61,7 +61,7 @@ preload(preloadFunctions, [options, props])(Component);
 ```javascript
 import { clearPreloadFunction } from "redux-preload";
 preload({preloadFunctionId: preloadFunction})(Component);
-clearPreloadFunction("preloadFunctionId");
+store.dispatch(clearPreloadFunction("preloadFunctionId"));
 ```
 
 Used to clear the information about resolution of given preloadFunction from the Redux store.
