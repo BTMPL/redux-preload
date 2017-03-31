@@ -94,7 +94,7 @@ const preload = (preloadFunctions, options = {}) => {
            * redux `dispatch()`, and our `next()` callback
            */
           (preloadFunctions[key].fn).apply(this, [
-            this.props._dispatch, next.bind(this, key)
+            next.bind(this, key), this.props._dispatch
           ]);
 
           /**
