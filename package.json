@@ -1,0 +1,25 @@
+{
+  "name": "redux-preload",
+  "version": "0.1.0",
+  "description": "A helper for working with React Components and asynchronous data sources",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/btmpl/redux-preload.git"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "asynchronous",
+    "loader"
+  ],
+  "author": "Bartosz Szczecinski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/btmpl/redux-preload/issues"
+  },
+  "homepage": "https://github.com/btmpl/redux-preload#readme"
+}
