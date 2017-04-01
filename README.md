@@ -5,6 +5,8 @@ A small loader HoC that helps you deffer the rendering of your Components untill
 ## Example
 
 ```javascript
+import { preload } from "redux-preload";
+
 const OriginalComponent = () => {
   return <div>Preload completed</div>
 }
