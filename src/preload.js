@@ -5,10 +5,10 @@ import { registerPreloadFunction, markPreloadAsResolved } from "./store";
 export const IS_RESOLVING = "is_resolving";
 export const IS_RESOLVED = "is_resolved";
 
-const preload = (preloadFunctions, options = {}) => {
+const preload = (functions, options = {}) => {
   /**
    * Set default options for the Component
-   * - placeholder - a Component to be rendered while the preloadFunctions
+   * - placeholder - a Component to be rendered while the preload functions
    *   are still being resolved
    * - dontCache - by default all the resolvers are cached and not executed
    *   a second time they are encountered, if it's needed you can remove the
@@ -19,10 +19,13 @@ const preload = (preloadFunctions, options = {}) => {
     dontCache: false,
   }, options);
 
-  preloadFunctions = Object.assign({}, preloadFunctions);
-  Object.keys(preloadFunctions).forEach(key => {
+  /**
+   * Create an map of all the preload function and add the correct initial state
+   */
+  let preloadFunctions = {};
+  Object.keys(functions).forEach(key => {
     preloadFunctions[key] = {
-      fn: preloadFunctions[key],
+      fn: functions[key],
       status: IS_RESOLVING
     }
   });
@@ -71,6 +74,17 @@ const preload = (preloadFunctions, options = {}) => {
         this.state = {
           state: IS_RESOLVING
         }
+
+        /**
+         * Reset the preload state bound to each indeividual preload function
+         * for when we re-use the same HoC definition
+         */
+        Object.keys(preloadFunctions).forEach(key => {
+          preloadFunctions[key] = Object.assign({},
+            preloadFunctions[key],
+            { state: IS_RESOLVING }
+          );
+        });
 
         this.removeOwnProps = this.removeOwnProps.bind(this);
       }
@@ -150,8 +164,8 @@ const preload = (preloadFunctions, options = {}) => {
       preloadFunctions: store.preload.preloaders
     }), (dispatch) => ({
       _dispatch: dispatch,
-      registerPreloadFunction: (...p) => dispatch(registerPreloadFunction(...p)),
-      markPreloadAsResolved: (...p) => dispatch(markPreloadAsResolved(...p))
+      markPreloadAsResolved: (...p) => dispatch(markPreloadAsResolved(...p)),
+      registerPreloadFunction: (...p) => dispatch(registerPreloadFunction(...p))
     }))(PreloadComponent);
   }
 
