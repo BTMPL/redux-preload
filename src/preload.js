@@ -1,5 +1,3 @@
-// @TODO fails to clear cache with multiple preloaders
-
 import React from "react";
 import { connect } from "react-redux";
 import { registerPreloadFunction, markPreloadAsResolved } from "./store";
@@ -98,20 +96,12 @@ const preload = (preloadFunctions, options = {}) => {
            */
           if(this.props.preloadFunctions.filter(item => {
             return item.fn === key && item.state === IS_RESOLVED
-          }).length === 1) {
+          }).length !== 0) {
             next.bind(this, key).call();
             return;
           }
 
           // @TODO what to do when an preloadFunction is already resolving?
-
-          /**
-           * If the preload function was not yet resolved, call it and pass
-           * redux `dispatch()`, and our `next()` callback
-           */
-          (preloadFunctions[key].fn).apply(this, [
-            next.bind(this, key), this.props._dispatch, this.removeOwnProps()
-          ]);
 
           /**
            * We are placing the resolver function status into redux so that
@@ -125,6 +115,14 @@ const preload = (preloadFunctions, options = {}) => {
               state: IS_RESOLVING
             });
           }
+
+          /**
+           * If the preload function was not yet resolved, call it and pass
+           * redux `dispatch()`, and our `next()` callback
+           */
+          (preloadFunctions[key].fn).apply(this, [
+            next.bind(this, key), this.props._dispatch, this.removeOwnProps()
+          ]);
         })
       }
 

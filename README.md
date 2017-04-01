@@ -58,6 +58,8 @@ preload(preloadFunctions, [options, props])(Component);
 - `placeholder` - default: `null` - a component to be rendered while the `preloadFunctions` are being evaluated
 - `dontCache` - default: `false` - by default each of the `preloadFunctions` is marked as completed, and stored in redux, so that subsequent calls to given preload functions are immediately considered resolved, set to `true` to skip caching current request
 
+`props` - default: `{}` - props passed to the HoC
+
 ### clearPreloadFunction()
 
 ```javascript
