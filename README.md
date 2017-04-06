@@ -4,6 +4,8 @@ A small loader HoC that helps you deffer the rendering of your Components untill
 
 ## Example
 
+@TODO add info about reducer
+
 ```javascript
 import { preload } from "redux-preload";
 

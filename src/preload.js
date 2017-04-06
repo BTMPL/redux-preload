@@ -146,7 +146,7 @@ const preload = (functions, options = {}) => {
          * the props specific to our component
          */
         const props = this.removeOwnProps();
-
+        // @TODO add option to show component while loading data
         if(this.state.state === IS_RESOLVED) {
           return (
             <Component {...props} />
