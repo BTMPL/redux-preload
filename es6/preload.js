@@ -16,6 +16,7 @@ const preload = (functions, options = {}) => {
    */
   options = Object.assign({}, {
     placeholder: null,
+    showComponentWhileLoading: false,
     dontCache: false,
   }, options);
 
@@ -153,8 +154,8 @@ const preload = (functions, options = {}) => {
          * the props specific to our component
          */
         const props = this.removeOwnProps();
-        // @TODO add option to show component while loading data
-        if(this.state.stage === IS_RESOLVED) {
+
+        if(options.showComponentWhileLoading === true || this.state.stage === IS_RESOLVED) {
           return (
             <Component {...props} {...this.state.resolveParams} />
           )

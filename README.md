@@ -62,6 +62,7 @@ If you call the callback with an `Object` it will be spread as props onto the `C
 
 - `placeholder` - default: `null` - a component to be rendered while the `preloadFunctions` are being evaluated
 - `dontCache` - default: `false` - by default each of the `preloadFunctions` is marked as completed, and stored in redux, so that subsequent calls to given preload functions are immediately considered resolved, set to `true` to skip caching current request
+- `showComponentWhileLoading` - default: `false` - if set to true the component will be returned right away, and updated as preloader functions resolv. This mode can be used to support basic cache, as its rendering more does not differ from just rendering the same component while the data is still loading.
 
 `props` - default: `{}` - props passed to the HoC
 
