@@ -156,9 +156,7 @@ const preload = (functions, options = {}) => {
         const props = this.removeOwnProps();
 
         if(options.showComponentWhileLoading === true || this.state.stage === IS_RESOLVED) {
-          return (
-            <Component {...props} {...this.state.resolveParams} />
-          )
+          return React.createElement(Component, Object.assign({}, props, this.state.resolveParams));
         }
         else {
           return options.placeholder;
