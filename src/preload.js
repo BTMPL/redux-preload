@@ -33,7 +33,7 @@ const preload = (functions, options = {}) => {
 
   const factory = (Component) => {
 
-    function next(key) {
+    function next(key, nextResolveParams = null) {
       /**
        * Mark given preload function as resolved internally
        */
@@ -55,9 +55,15 @@ const preload = (functions, options = {}) => {
       if(Object.values(preloadFunctions).filter(preloadItem => {
         return preloadItem.state === IS_RESOLVED;
       }).length === Object.values(preloadFunctions).length) {
-        this.setState({
+        this.setState((state) => ({
           state: IS_RESOLVED
-        })
+        }));
+      }
+
+      if(nextResolveParams !== null) {
+        this.setState((state) => ({
+          resolveParams: Object.assign({}, state.resolveParams, nextResolveParams)
+        }));
       }
     }
 
@@ -72,7 +78,8 @@ const preload = (functions, options = {}) => {
         super(...p);
 
         this.state = {
-          state: IS_RESOLVING
+          state: IS_RESOLVING,
+          resolveParams: {}
         }
 
         /**
@@ -149,7 +156,7 @@ const preload = (functions, options = {}) => {
         // @TODO add option to show component while loading data
         if(this.state.state === IS_RESOLVED) {
           return (
-            <Component {...props} />
+            <Component {...props} {...this.state.resolveParams} />
           )
         }
         else {
