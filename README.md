@@ -6,11 +6,11 @@ A small loader HoC that helps you deffer the rendering of your Components untill
 
 ```javascript
 /**
- * attach a reducer to handle caching, if you skipp this step the library will still function
+ * attach a reducer to handle caching, if you skip this step the library will still function
  * but no caching functionality will be used
  */
 // store.js
-import { reducer as preloadReducer } from "./redux-preload/es6";
+import { reducer as preloadReducer } from "./redux-preload";
 
 export default createStore(combineReducers({
   preload: preloadReducer,
