@@ -26,7 +26,7 @@ const preload = (functions, options = {}) => {
   Object.keys(functions).forEach(key => {
     preloadFunctions[key] = {
       fn: functions[key],
-      status: IS_RESOLVING
+      stage: IS_RESOLVING
     }
   });
 
@@ -39,7 +39,7 @@ const preload = (functions, options = {}) => {
        */
       preloadFunctions = Object.assign({}, preloadFunctions, {
         [key]: Object.assign({}, preloadFunctions[key], {
-          state: IS_RESOLVED
+          stage: IS_RESOLVED
         })
       });
 
@@ -53,11 +53,11 @@ const preload = (functions, options = {}) => {
        * and if so, update the component to be also resolved
        */
       if(Object.values(preloadFunctions).filter(preloadItem => {
-        return preloadItem.state === IS_RESOLVED;
+        return preloadItem.stage === IS_RESOLVED;
       }).length === Object.values(preloadFunctions).length) {
-        this.setState((state) => ({
-          state: IS_RESOLVED
-        }));
+        this.setState({
+          stage: IS_RESOLVED
+        });
       }
 
       if(nextResolveParams !== null) {
@@ -78,7 +78,7 @@ const preload = (functions, options = {}) => {
         super(...p);
 
         this.state = {
-          state: IS_RESOLVING,
+          stage: IS_RESOLVING,
           resolveParams: {}
         }
 
@@ -89,7 +89,7 @@ const preload = (functions, options = {}) => {
         Object.keys(preloadFunctions).forEach(key => {
           preloadFunctions[key] = Object.assign({},
             preloadFunctions[key],
-            { state: IS_RESOLVING }
+            { stage: IS_RESOLVING }
           );
         });
 
@@ -116,7 +116,7 @@ const preload = (functions, options = {}) => {
            * and if so, skip it.
            */
           if(this.props.preloadFunctions.filter(item => {
-            return item.fn === key && item.state === IS_RESOLVED
+            return item.fn === key && item.stage === IS_RESOLVED
           }).length !== 0) {
             next.bind(this, key).call();
             return;
@@ -133,7 +133,7 @@ const preload = (functions, options = {}) => {
           if(!options.dontCache) {
             this.props.registerPreloadFunction({
               fn: key,
-              state: IS_RESOLVING
+              stage: IS_RESOLVING
             });
           }
 
@@ -154,7 +154,7 @@ const preload = (functions, options = {}) => {
          */
         const props = this.removeOwnProps();
         // @TODO add option to show component while loading data
-        if(this.state.state === IS_RESOLVED) {
+        if(this.state.stage === IS_RESOLVED) {
           return (
             <Component {...props} {...this.state.resolveParams} />
           )

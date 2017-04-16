@@ -1,5 +1,6 @@
 import { IS_RESOLVED } from "./preload";
 
+
 export const PRELOAD_FUNCTION_REGISTER = "PRELOAD_FUNCTION_REGISTER";
 export const PRELOAD_FUNCTION_RESOLVED = "PRELOAD_FUNCTION_RESOLVED";
 export const PRELOAD_FUNCTION_CLEAR = "PRELOAD_FUNCTION_CLEAR";
@@ -36,7 +37,7 @@ const store = (state = initialState, action) => {
 
     case PRELOAD_FUNCTION_RESOLVED:
       return Object.assign({}, state, { preloaders: [...state.preloaders.map(item => {
-        if(item.fn === action.payload) item.state = IS_RESOLVED;
+        if(item.fn === action.payload) item.stage = IS_RESOLVED;
         return item;
       })]})
 
