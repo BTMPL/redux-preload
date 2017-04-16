@@ -52,6 +52,9 @@ preload(preloadFunctions, [options, props])(Component);
 `preloadFunctions` should be an Object which every key will be considered a preload function to be evaluated before rendering the Component. Each of the functions will be called with following parameters:
 
 - `next` - a callback to be called after the preloadFunction should be considered resolved
+
+If you call the callback with an `Object` it will be spread as props onto the `Component` that will be rendered in the end. Multiple calls to `next` (eg. in multiple preloader functions) will be merged together.
+
 - `dispatch` - Redux `dispatch()` function attached to the current store supplied by `react-redux` `<Provider />`
 - `props` - the props passed to the Component while rendering
 
