@@ -3,7 +3,7 @@ import store, { clearPreloadFunction } from "./store.js";
 import preload from "./preload.js";
 
 export {
-  store,
+  store as reducer,
   preload,
 
   clearPreloadFunction
