@@ -13,11 +13,13 @@ const preload = (functions, options = {}) => {
    * - dontCache - by default all the resolvers are cached and not executed
    *   a second time they are encountered, if it's needed you can remove the
    *   cache, or decide to not store this preloader in the cache at all
+   * - ttl - time, after which function is to be considered no longer cached
    */
   options = Object.assign({}, {
     placeholder: null,
     showComponentWhileLoading: false,
     dontCache: false,
+    ttl: -1
   }, options);
 
   /**
@@ -117,7 +119,15 @@ const preload = (functions, options = {}) => {
            * and if so, skip it.
            */
           if(this.props.preloadFunctions.filter(item => {
-            return item.fn === key && item.stage === IS_RESOLVED
+            if(item.fn === key && item.stage === IS_RESOLVED) {
+              if(item.ttl !== -1) {
+                return item.ttl > (new Date()).getTime()
+              }
+              else {
+                return true;
+              }
+            }
+            return false;
           }).length !== 0) {
             next.bind(this, key).call();
             return;
@@ -134,7 +144,8 @@ const preload = (functions, options = {}) => {
           if(!options.dontCache) {
             this.props.registerPreloadFunction({
               fn: key,
-              stage: IS_RESOLVING
+              stage: IS_RESOLVING,
+              ttl: options.ttl === -1 ? -1 : (new Date()).getTime() + (options.ttl)
             });
           }
 
