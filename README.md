@@ -71,7 +71,7 @@ If you call the callback with an `Object` it will be spread as props onto the `C
 
 `options` - optional secondary parameter with following keys:
 
-- `placeholder` - default: `null` - a component to be rendered while the `preloadFunctions` are being evaluated
+- `placeholder` - default: `null` - a component to be rendered while the `preloadFunctions` are being evaluated. If provied a function, it will be called with the props passed in the JSX.
 - `dontCache` - default: `false` - by default each of the `preloadFunctions` is marked as completed, and stored in redux, so that subsequent calls to given preload functions are immediately considered resolved, set to `true` to skip caching current request
 - `ttl` - default: `null` - time (in miliseconds) after which the `preloadFunction` cache should be considered expired
 - `showComponentWhileLoading` - default: `false` - if set to true the component will be returned right away, and updated as preloader functions resolv. This mode can be used to support basic cache, as its rendering more does not differ from just rendering the same component while the data is still loading.

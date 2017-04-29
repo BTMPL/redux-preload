@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerPreloadFunction, markPreloadAsResolved } from "./store";
 
@@ -51,6 +52,8 @@ const preload = (functions, options = {}) => {
        */
       this.props.markPreloadAsResolved(key);
 
+      const nextState = {};
+
       /**
        * Check if all the preloader functions are now resolved
        * and if so, update the component to be also resolved
@@ -58,16 +61,14 @@ const preload = (functions, options = {}) => {
       if(Object.values(preloadFunctions).filter(preloadItem => {
         return preloadItem.stage === IS_RESOLVED;
       }).length === Object.values(preloadFunctions).length) {
-        this.setState({
-          stage: IS_RESOLVED
-        });
+        nextState.stage = IS_RESOLVED
       }
 
       if(nextResolveParams !== null) {
-        this.setState((state) => ({
-          resolveParams: Object.assign({}, state.resolveParams, nextResolveParams)
-        }));
+        nextState.resolveParams = Object.assign({}, this.state.resolveParams, nextResolveParams);
       }
+
+      this.setState(nextState);
     }
 
     /**
@@ -170,12 +171,22 @@ const preload = (functions, options = {}) => {
           return React.createElement(Component, Object.assign({}, props, this.state.resolveParams));
         }
         else {
+          if(typeof options.placeholder === 'function') {
+            return options.placeholder(Object.assign({}, props, this.state.resolveParams));
+          }
           return options.placeholder;
         }
       }
     }
 
     PreloadComponent.displayName = 'PreloadComponent';
+
+    PreloadComponent.propTypes = {
+      preloadFunctions: PropTypes.array,
+      markPreloadAsResolved: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
+      registerPreloadFunction: PropTypes.func,
+      _dispatch: PropTypes.func,
+    }
 
     return connect((store) => ({
       preloadFunctions: store.preload.preloaders
